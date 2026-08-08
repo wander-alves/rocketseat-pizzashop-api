@@ -1,10 +1,15 @@
 import { Elysia } from 'elysia';
 
+import { env } from '../env';
+
+
 const app = new Elysia()
   .get("/", ()=> {
     return "hello world.\n"
   });
 
-app.listen(3333, ()=> { 
-  console.log(`Server running on 3333...`)
+const PORT = env.PORT;
+
+app.listen(PORT, ()=> { 
+  console.log(`Server running on http://localhost:${PORT}`)
 })

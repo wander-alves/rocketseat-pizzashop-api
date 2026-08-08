@@ -5,9 +5,11 @@ services:
         ports:
             - "5432:5432"
         environment:
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=docker
+            - POSTGRES_USER=pizza_chief
+            - POSTGRES_PASSWORD=cowabunga
             - POSTGRES_DB=pizzashop-db
+        volumes:
+            - pizzashop_api_pg:/database/postgres
 
 volumes:
-    postgres_data:
+    pizzashop_api_pg:
