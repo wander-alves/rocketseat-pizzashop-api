@@ -1,3 +1,4 @@
+/* eslint-disable drizzle/enforce-delete-with-where */
 import { faker } from '@faker-js/faker';
 import chalk from 'chalk';
 
@@ -12,25 +13,28 @@ await db.insert(users).values([
   {
     name: faker.person.fullName(),
     email: faker.internet.email(),
-    role: 'customer'
+    role: 'customer',
   },
   {
     name: faker.person.fullName(),
     email: faker.internet.email(),
-    role: 'customer'
+    role: 'customer',
   },
 ]);
 console.log(chalk.yellowBright('✔  Created customers '));
 
-const [manager] = await db.insert(users).values([
-  {
-    name: faker.person.fullName(),
-    email: 'admin@test.local',
-    role: 'manager'
-  },
-]).returning({
-  id: users.id,
-});
+const [manager] = await db
+  .insert(users)
+  .values([
+    {
+      name: faker.person.fullName(),
+      email: 'admin@test.local',
+      role: 'manager',
+    },
+  ])
+  .returning({
+    id: users.id,
+  });
 console.log(chalk.yellowBright('✔  Created managers '));
 
 await db.insert(restaurants).values([
@@ -38,10 +42,8 @@ await db.insert(restaurants).values([
     name: faker.company.name(),
     description: faker.lorem.paragraph(),
     managerId: manager?.id,
-  }
+  },
 ]);
-
-
 
 console.log(chalk.yellowBright('✔  Created restaurants '));
 console.log(chalk.greenBright('✔  Database seeded successfully '));

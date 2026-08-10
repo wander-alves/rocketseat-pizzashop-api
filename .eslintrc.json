@@ -1,0 +1,24 @@
+{
+  "extends": [
+    "@rocketseat/eslint-config/node",
+    "plugin:drizzle/all"
+  ],
+  "plugins": [
+    "drizzle"
+  ],
+  "rules": {
+    "no-useless-constructor": "off",
+    "no-empty": "off",
+    "camelcase": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto",
+        "singleQuote": true,
+        "trailingComma": "all",
+        "semi": true,
+        "bracketSpacing": true
+      }
+    ]
+  }
+}
