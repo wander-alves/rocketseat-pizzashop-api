@@ -29,6 +29,13 @@
       "when": 1786338256337,
       "tag": "0003_grey_golden_guardian",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1786413516753,
+      "tag": "0004_young_sersi",
+      "breakpoints": true
     }
   ]
 }
