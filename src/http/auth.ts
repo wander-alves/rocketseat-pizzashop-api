@@ -30,6 +30,18 @@ const auth = new Elysia()
       signOutUser: () => {
         auth?.remove();
       },
+      getCurrentUser: async () => {
+        const payload = await jwt.verify(String(auth!.value));
+
+        if (!payload) {
+          throw new Error('Unauthorized.');
+        }
+
+        return {
+          userId: payload.sub,
+          restaurantId: payload.restaurantId,
+        };
+      },
     };
   });
 
