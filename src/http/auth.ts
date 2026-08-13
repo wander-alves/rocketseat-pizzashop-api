@@ -1,16 +1,36 @@
-import { Elysia, t } from 'elysia';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
+import { Elysia, t, type Static } from 'elysia';
 import jwt from '@elysiajs/jwt';
 
 import { env } from '../env';
 
-const auth = new Elysia().use(
-  jwt({
-    secret: env.JWT_SECRET_KEY,
-    schema: t.Object({
-      sub: t.String(),
-      restaurantId: t.Optional(t.String()),
-    }),
-  }),
-);
+const jwtSchema = t.Object({
+  sub: t.String(),
+  restaurantId: t.Optional(t.String()),
+});
 
-export { auth };
+const auth = new Elysia()
+  .use(
+    jwt({
+      secret: env.JWT_SECRET_KEY,
+      schema: jwtSchema,
+    }),
+  )
+  .derive({ as: 'scoped' }, ({ jwt, cookie: { auth } }) => {
+    return {
+      signInUser: async (payload: Static<typeof jwtSchema>) => {
+        const token = await jwt.sign(payload);
+
+        auth!.value = token;
+        auth!.httpOnly = true;
+        auth!.maxAge = 60 * 60 * 24 * 7;
+        auth!.path = '/';
+      },
+      signOutUser: () => {
+        auth?.remove();
+      },
+    };
+  });
+
+export { auth, jwtSchema };
