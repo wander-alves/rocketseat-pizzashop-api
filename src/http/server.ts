@@ -6,13 +6,15 @@ import { sendAuthLink } from './routes/send-auth-link';
 import { authenticateFromLink } from './routes/authenticate-from-link';
 import { signOut } from './routes/sign-out';
 import { getProfile } from './routes/get-profile';
+import { getManagedRestaurant } from './routes/get-managed-restaurant';
 
 const app = new Elysia()
   .use(registerRestaurant)
   .use(sendAuthLink)
   .use(authenticateFromLink)
   .use(signOut)
-  .use(getProfile);
+  .use(getProfile)
+  .use(getManagedRestaurant);
 
 const PORT = env.PORT;
 
