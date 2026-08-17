@@ -10,7 +10,6 @@ import { getManagedRestaurant } from './routes/get-managed-restaurant';
 
 const app = new Elysia()
   .onError(({ code, error, set }) => {
-    console.log('entrypoint');
     switch (code) {
       case 'VALIDATION': {
         const message = JSON.parse(error.message).summary;

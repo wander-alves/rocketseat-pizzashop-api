@@ -1,9 +1,11 @@
 import { Elysia, t } from 'elysia';
 import { createId } from '@paralleldrive/cuid2';
+import nodemailer from 'nodemailer';
 
 import { env } from '../../env';
 import { db } from '../../db/connection';
 import { authLinks } from '../../db/schema';
+import { mailClient } from '../../lib/mail';
 
 const sendAuthLink = new Elysia().post(
   '/authenticate',
@@ -30,7 +32,18 @@ const sendAuthLink = new Elysia().post(
 
     authLink.searchParams.set('code', authLinkCode);
     authLink.searchParams.set('redirect', env.AUTH_REDIRECT_URL);
-    console.log(authLink.toString());
+
+    const info = await mailClient.sendMail({
+      from: {
+        name: 'Pizza Shop',
+        address: 'hi@pizzashop.local',
+      },
+      to: email,
+      subject: 'Authenticate to Pizza Shop',
+      text: `Use the following link to authenticate on Pizza Shop: ${authLink.toString()}`,
+    });
+
+    console.log(nodemailer.getTestMessageUrl(info));
   },
   {
     body: t.Object({
