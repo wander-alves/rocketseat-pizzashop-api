@@ -9,18 +9,10 @@ import { getProfile } from './routes/get-profile';
 import { getManagedRestaurant } from './routes/get-managed-restaurant';
 
 const app = new Elysia()
-
-  .use(registerRestaurant)
-  .use(sendAuthLink)
-  .use(authenticateFromLink)
-  .use(signOut)
-  .use(getProfile)
-  .use(getManagedRestaurant)
-  .onError({ as: 'global' }, ({ code, error, set }) => {
-    console.log(code);
+  .onError(({ code, error, set }) => {
+    console.log('entrypoint');
     switch (code) {
       case 'VALIDATION': {
-        console.log(error.message);
         const message = JSON.parse(error.message).summary;
         set.status = 400;
         return {
@@ -28,22 +20,22 @@ const app = new Elysia()
           message,
         };
       }
-      // case 'UNAUTHORIZED': {
-      //   return {
-      //     status: error.status,
-      //     message: error.message,
-      //   };
-      // }
-
-      default: {
+      case 'UNKNOWN': {
         console.log(error);
+        set.status = 500;
         return {
           status: 500,
           message: 'Internal server error',
         };
       }
     }
-  });
+  })
+  .use(registerRestaurant)
+  .use(sendAuthLink)
+  .use(authenticateFromLink)
+  .use(signOut)
+  .use(getProfile)
+  .use(getManagedRestaurant);
 
 const PORT = env.PORT;
 

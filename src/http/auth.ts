@@ -15,9 +15,11 @@ const auth = new Elysia()
   .error({
     UNAUTHORIZED: UnauthorizedError,
   })
-  .onError(({ code, error }) => {
+  .onError({ as: 'scoped' }, ({ code, error, set }) => {
+    console.log('auth');
     switch (code) {
       case 'UNAUTHORIZED': {
+        set.status = 400;
         return {
           status: error.status,
           message: error.message,
@@ -45,7 +47,12 @@ const auth = new Elysia()
         auth?.remove();
       },
       getCurrentUser: async () => {
-        const payload = await jwt.verify(String(auth!.value));
+        if (!auth || !auth.value) {
+          throw new UnauthorizedError();
+        }
+        console.log('teste');
+
+        const payload = await jwt.verify(String(auth.value));
 
         if (!payload) {
           throw new UnauthorizedError();
