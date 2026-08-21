@@ -16,11 +16,9 @@ const orders = pgTable('orders', {
   id: text('id')
     .$defaultFn(() => createId())
     .primaryKey(),
-  customerId: text('customer_id')
-    .notNull()
-    .references(() => users.id, {
-      onDelete: 'set null',
-    }),
+  customerId: text('customer_id').references(() => users.id, {
+    onDelete: 'set null',
+  }),
   restaurantId: text('restaurant_id')
     .notNull()
     .references(() => restaurants.id, {
