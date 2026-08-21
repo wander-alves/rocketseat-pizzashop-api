@@ -31,12 +31,12 @@ const orders = pgTable('orders', {
 
 const ordersRelations = relations(orders, ({ one, many }) => {
   return {
-    order: one(users, {
+    customer: one(users, {
       fields: [orders.customerId],
       references: [users.id],
       relationName: 'order_customer',
     }),
-    product: one(restaurants, {
+    restaurant: one(restaurants, {
       fields: [orders.restaurantId],
       references: [restaurants.id],
       relationName: 'order_restaunt',
