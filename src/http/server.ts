@@ -8,6 +8,7 @@ import { signOut } from './routes/sign-out';
 import { getProfile } from './routes/get-profile';
 import { getManagedRestaurant } from './routes/get-managed-restaurant';
 import { getOrderDetails } from './routes/get-order-details';
+import { approveOrder } from './routes/approve-order';
 
 const app = new Elysia()
   .onError(({ code, error, set }) => {
@@ -36,7 +37,8 @@ const app = new Elysia()
   .use(signOut)
   .use(getProfile)
   .use(getManagedRestaurant)
-  .use(getOrderDetails);
+  .use(getOrderDetails)
+  .use(approveOrder);
 
 const PORT = env.PORT;
 
