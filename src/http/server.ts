@@ -9,6 +9,9 @@ import { getProfile } from './routes/get-profile';
 import { getManagedRestaurant } from './routes/get-managed-restaurant';
 import { getOrderDetails } from './routes/get-order-details';
 import { approveOrder } from './routes/approve-order';
+import { cancelOrder } from './routes/cancel-order';
+import { deliverOrder } from './routes/deliver-order';
+import { dispatchOrder } from './routes/dispatch-order';
 
 const app = new Elysia()
   .onError(({ code, error, set }) => {
@@ -38,7 +41,10 @@ const app = new Elysia()
   .use(getProfile)
   .use(getManagedRestaurant)
   .use(getOrderDetails)
-  .use(approveOrder);
+  .use(approveOrder)
+  .use(cancelOrder)
+  .use(deliverOrder)
+  .use(dispatchOrder);
 
 const PORT = env.PORT;
 
